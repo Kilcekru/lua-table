@@ -187,5 +187,12 @@ Licensed under [MIT](https://github.com/Kilcekru/lua-table/blob/main/LICENSE).
 
 ## Changelog
 
+- v1.1.1
+  - fix: parsing of literal keys in table
+  - fix: parsing of numbers with exponent 
+
+- v1.1.0
+	- added option `mixedKeyTypes` and `nonPositiveIntegerKeys` for stringify
+
 - v1.0.0
 	- Initial Release
