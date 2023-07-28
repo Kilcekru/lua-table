@@ -42,6 +42,11 @@ export function isNumber(char: string) {
 	return charCode >= 48 && charCode <= 57;
 }
 
+export function isLetter(char: string) {
+	const charCode = char.charCodeAt(0);
+	return (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122);
+}
+
 export function analyzeKeys(keys: Array<string | number>) {
 	const hasStringKey = keys.some((e) => typeof e === "string");
 

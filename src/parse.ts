@@ -1,4 +1,4 @@
-import { analyzeKeys, errMsg, isNumber, isWhiteSpace } from "./utils";
+import { analyzeKeys, errMsg, isLetter, isNumber, isWhiteSpace } from "./utils";
 
 export interface ParseOptions {
 	/**
@@ -169,16 +169,22 @@ class Parser {
 				this.pos++;
 				return this.finalizeTable(arrEntries, entries);
 			}
-			const key = this.tryKey();
 			const value = this.tryValue();
-			if (value === undefined) {
-				throw new Error(this.invalidMessage());
+			if (value != undefined) {
+				arrEntries.push(value);
 			} else {
+				let key = this.tryKey();
 				if (key === undefined) {
-					arrEntries.push(value);
-				} else {
-					entries.set(key, value);
+					key = this.tryLiteral();
 				}
+				if (key === undefined) {
+					throw new Error(this.invalidMessage());
+				}
+				const value = this.tryValue();
+				if (value === undefined) {
+					throw new Error(this.invalidMessage());
+				}
+				entries.set(key, value);
 			}
 			this.skipWhiteSpace();
 			if (this.currentChar() === ",") {
@@ -222,6 +228,29 @@ class Parser {
 		this.pos++;
 		this.skipWhiteSpace();
 		return key;
+	}
+
+	tryLiteral(): string | undefined {
+		const char = this.currentChar();
+		if (char !== "_" && !isLetter(char)) {
+			return undefined;
+		}
+		const start = this.pos;
+		while (++this.pos < this.input.length) {
+			const char = this.currentChar();
+			if (char === "_" || isNumber(char) || isLetter(char)) {
+				continue;
+			}
+			const end = this.pos;
+			this.skipWhiteSpace();
+			if (this.currentChar() !== "=") {
+				throw new Error(this.invalidMessage());
+			}
+			this.pos++;
+			this.skipWhiteSpace();
+			return this.input.slice(start, end);
+		}
+		throw new Error(errMsg.end());
 	}
 
 	tryString(): string | undefined {

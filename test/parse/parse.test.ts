@@ -49,6 +49,13 @@ describe("parse", () => {
 			expect(parse("{[3] = 3, 1, 2}")).toEqual([1, 2, 3]);
 		});
 
+		test("array of arrays)", () => {
+			expect(parse(`{{1, 2, 3}, {4, 5, 6}}`)).toEqual([
+				[1, 2, 3],
+				[4, 5, 6],
+			]);
+		});
+
 		test("array (fromFile)", () => {
 			expect(parse(fromFile("array"))).toEqual([1, 2, "str"]);
 		});
@@ -61,12 +68,20 @@ describe("parse", () => {
 			expect(parse("{['a']=1,['b']='str'}")).toEqual({ a: 1, b: "str" });
 		});
 
+		test("object (unquoted keys)", () => {
+			expect(parse(`{a=1,b="str"}`)).toEqual({ a: 1, b: "str" });
+		});
+
 		test("object (mixed quotes)", () => {
 			expect(parse(`{["a"]=1,['b']="str"}`)).toEqual({ a: 1, b: "str" });
 		});
 
 		test("object (fromFile)", () => {
 			expect(parse(fromFile("object"))).toEqual({ a: 1, b: 2, c: "str" });
+		});
+
+		test("complex (string, table)", () => {
+			expect(parse(`{"lua51",{it = true,describe = true}}`)).toEqual(["lua51", { it: true, describe: true }]);
 		});
 
 		test("whitespace", () => {
