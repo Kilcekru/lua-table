@@ -290,17 +290,19 @@ class Parser {
 		}
 		let pos = this.pos;
 		let decimal = char === ".";
+		let exponent = false;
 		while (++pos < this.input.length) {
 			char = this.input.charAt(pos);
 			if (char === "." && !decimal) {
 				decimal = true;
-			} else if (!isNumber(char)) {
-				const num = Number.parseFloat(this.input.slice(this.pos, pos));
-				if (Number.isNaN(num)) {
-					return undefined;
+			} else if (char === "e" && !exponent) {
+				const nextChar = this.input.charAt(pos + 1);
+				if (nextChar === "+" || nextChar === "-") {
+					pos++;
 				}
-				this.pos = pos;
-				return num;
+				exponent = true;
+			} else if (!isNumber(char)) {
+				break;
 			}
 		}
 		const num = Number.parseFloat(this.input.slice(this.pos, pos));

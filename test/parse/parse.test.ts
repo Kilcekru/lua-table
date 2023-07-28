@@ -37,6 +37,18 @@ describe("parse", () => {
 			expect(parse("-13.46")).toBe(-13.46);
 		});
 
+		test("number (exponent)", () => {
+			expect(parse("-2.936e4")).toBe(-29360);
+		});
+
+		test("number (positive exponent)", () => {
+			expect(parse(".347e+3")).toBe(347);
+		});
+
+		test("number (negative exponent)", () => {
+			expect(parse("1.12e-2")).toBe(0.0112);
+		});
+
 		test("array (implicit keys)", () => {
 			expect(parse("{1, 2, 3}")).toEqual([1, 2, 3]);
 		});
