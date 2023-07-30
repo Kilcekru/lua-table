@@ -92,12 +92,16 @@ describe("parse", () => {
 			expect(parse(fromFile("object"))).toEqual({ a: 1, b: 2, c: "str" });
 		});
 
-		test("complex (string, table)", () => {
-			expect(parse(`{"lua51",{it = true,describe = true}}`)).toEqual(["lua51", { it: true, describe: true }]);
+		test("object (separators)", () => {
+			expect(parse(`{a=1,b=2;c=3,}`)).toEqual({ a: 1, b: 2, c: 3 });
 		});
 
 		test("whitespace", () => {
 			expect(parse(`  {	[ "a"   ]\n\t=  1 ,\r\n[ "b"  ] =  "str"\r  }  `)).toEqual({ a: 1, b: "str" });
+		});
+
+		test("complex (string, table)", () => {
+			expect(parse(`{"lua51",{it = true,describe = true}}`)).toEqual(["lua51", { it: true, describe: true }]);
 		});
 
 		test("complex", () => {

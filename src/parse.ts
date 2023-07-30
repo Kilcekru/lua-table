@@ -187,7 +187,7 @@ class Parser {
 				entries.set(key, value);
 			}
 			this.skipWhiteSpace();
-			if (this.currentChar() === ",") {
+			if (this.currentChar() === "," || this.currentChar() === ";") {
 				this.pos++;
 				this.skipWhiteSpace();
 			} else if (this.currentChar() === "}") {

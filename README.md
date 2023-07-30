@@ -187,6 +187,9 @@ Licensed under [MIT](https://github.com/Kilcekru/lua-table/blob/main/LICENSE).
 
 ## Changelog
 
+- v1.1.2
+  - fix: allow semicolon in tables
+
 - v1.1.1
   - fix: parsing of literal keys in table
   - fix: parsing of numbers with exponent 
